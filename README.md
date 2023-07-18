@@ -10,7 +10,7 @@
 
 ### Tables Explanation
 
-**Hotel:** Holds the details of the hotel. It has a `location_id` as every hotel has a unique location, along with other required data such as name, city, state, address and phone number. It is linked with rooms through a many-to-many relationship, for which we create a `Hotel Rooms` table.
+**Hotel:** Holds the details of the hotel. It has `location_id` as every hotel has a unique location, along with other required data such as name, city, state, address and phone number. It is linked with rooms through a many-to-many relationship, for which we create a `Hotel Rooms` table.
 
 **Room:** Each room has an `id` as the primary key, and additional fields include `name` and `layout_id`. The `layout_id` contains a number from an `enum` that represents the types of rooms (studio, one room, two rooms). The table has a many-to-many relationship with hotels, as multiple hotels can have multiple rooms. Therefore, we create the `Hotel Rooms` table.
 
