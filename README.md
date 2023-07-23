@@ -19,3 +19,7 @@
 **Amenity:** This table holds the `amenity_id` as the primary key and the name of the amenity that rooms have. The relationship between rooms and amenities is many-to-many, as multiple rooms can have multiple amenities. For this purpose, we create the `Amenities` table.
 
 **Amenities:** This is a pure join table. It only has two primary keys: one from the `Room` table and the other from the `Amenity` table. Together, these keys act as a composite key.
+
+## App architecture
+
+In the initial version of the application, the presentation layer (controllers) directly handled data access and database interactions, which is not considered a best practice . To solve this issue, I refactored the code to follow the Repository design pattern. By implementing interfaces representing data resources like `IAmenity` and `IHotel`, we created a separation between the presentation layer and data access logic. Now, the presentation layer relies on these interfaces to interact with data, promoting a more organized and decoupled codebase. This pattern enhances maintainability and testability.
