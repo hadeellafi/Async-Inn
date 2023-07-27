@@ -71,9 +71,41 @@ namespace Async_Inn.Controllers
             return NoContent();
         }
 
-       /* private bool RoomExists(int id)
+        /* private bool RoomExists(int id)
+         {
+             return (_context.Rooms?.Any(e => e.Id == id)).GetValueOrDefault();
+         }*/
+
+
+        /////////lab 14
+        [HttpPost]
+        [Route("{roomId}/Amenity/{amenityId}")]
+        public async Task<IActionResult> AddAmenityToRoom(int roomId,int amenityId)
         {
-            return (_context.Rooms?.Any(e => e.Id == id)).GetValueOrDefault();
-        }*/
+            try
+            {
+                await _context.AddAmenityToRoom(roomId, amenityId);
+                return Ok();
+            }
+            catch (InvalidOperationException ex) { 
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpDelete]
+        [Route("{roomId}/Amenity/{amenityId}")]
+        public async Task<IActionResult> RemoveAmenityFromRoom(int roomId, int amenityId)
+        {
+            try
+            {
+                await _context.RemoveAmenityFromRoom(roomId, amenityId);
+                return Ok();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }
