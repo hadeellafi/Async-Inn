@@ -179,8 +179,7 @@ In the initial version of the application, the presentation layer (controllers) 
   GET: `https://localhost:7004/api/Amenities/2`
 
   Output:
-  ```json
-{
+  ```json{
     "id": 2,
     "name": "Amenity 2",
     "roomAmenities": [
@@ -218,8 +217,8 @@ In the initial version of the application, the presentation layer (controllers) 
             }
         }
     ]
-}```
-
+} ```
+  
 ### Hotel Room Routes
 
 - **Get All Rooms for Specific Hotel**
