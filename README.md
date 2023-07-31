@@ -179,50 +179,46 @@ In the initial version of the application, the presentation layer (controllers) 
   GET: `https://localhost:7004/api/Amenities/2`
 
   Output:
-  ```json
-  {
-      "id": 2,
-      "name": "Amenity 2",
-      "roomAmenities": [
-          {
-              "roomId": 2,
-              "amenityId": 2,
-              "room": {
-                  "id": 2,
-                  "name": "Room 2",
-                  "roomLayout": 1,
-                  "roomAmenities": [],
-                  "hotelRooms": null
-              }
-          },
-          {
-              "roomId": 3,
-              "amenityId": 2,
-              "room": {
-                  "id": 3,
-                  "name": "Room 3",
-                  "roomLayout": 2,
-                  "roomAmenities": [],
-                  "hotelRooms": null
-              }
-          },
-          {
-              "roomId": 4,
-              "amenity
-
-Id": 2,
-              "room": {
-                  "id": 4,
-                  "name": "new",
-                  "roomLayout": 0,
-                  "roomAmenities": [],
-                  "hotelRooms": null
-              }
-          }
-      ]
-  }
-  ```
-
+  ```json{
+    "id": 2,
+    "name": "Amenity 2",
+    "roomAmenities": [
+        {
+            "roomId": 2,
+            "amenityId": 2,
+            "room": {
+                "id": 2,
+                "name": "Room 2",
+                "roomLayout": 1,
+                "roomAmenities": [],
+                "hotelRooms": null
+            }
+        },
+        {
+            "roomId": 3,
+            "amenityId": 2,
+            "room": {
+                "id": 3,
+                "name": "Room 3",
+                "roomLayout": 2,
+                "roomAmenities": [],
+                "hotelRooms": null
+            }
+        },
+        {
+            "roomId": 4,
+            "amenityId": 2,
+            "room": {
+                "id": 4,
+                "name": "new",
+                "roomLayout": 0,
+                "roomAmenities": [],
+                "hotelRooms": null
+            }
+        }
+    ]
+} ```
+  
 ### Hotel Room Routes
 
 - **Get All Rooms for Specific Hotel**
