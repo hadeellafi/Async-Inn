@@ -218,8 +218,7 @@ In the initial version of the application, the presentation layer (controllers) 
             }
         }
     ]
-}
-  ```
+}```
 
 ### Hotel Room Routes
 
