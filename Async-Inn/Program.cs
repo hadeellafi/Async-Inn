@@ -14,6 +14,12 @@ namespace Async_Inn
 
             builder.Services.AddControllers();
 
+            //to print use include list & after install package lab 14
+            builder.Services.AddControllers().AddNewtonsoftJson(options =>
+       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+     );
+            /////////////////////////////////
+            
             string connString = builder.Configuration.GetConnectionString("DefaultConnection");
 
             builder.Services
@@ -25,6 +31,9 @@ namespace Async_Inn
             builder.Services.AddTransient<IRoom, RoomService>();
 
             builder.Services.AddTransient<IAmenity, AmenityService>();
+
+            builder.Services.AddTransient<IHotelRoom, HotelRoomRepository>();
+
 
 
             ///////

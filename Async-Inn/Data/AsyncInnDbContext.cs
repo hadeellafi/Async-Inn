@@ -53,14 +53,30 @@ namespace Async_Inn.Data
                 new Room { Id = 2, Name = "Room 2", RoomLayout = 1 },
                 new Room { Id = 3, Name = "Room 3", RoomLayout = 2 }
             );
+            modelBuilder.Entity<RoomAmenity>().HasKey(
+               roomAmenity => new {
+                   roomAmenity.RoomId,
+                   roomAmenity.AmenityId
+               }
+               );
+
+            modelBuilder.Entity<HotelRoom>().HasKey(
+               hotelRoom => new {
+                   hotelRoom.HotelId,
+                   hotelRoom.RoomNumber
+               }
+               );
         }
         public DbSet<Hotel> Hotels { get; set; }
-
-        //  public DbSet<HotelRooms> HotelRooms { get; set;}
 
         public DbSet<Room> Rooms { get; set; }
 
         public DbSet<Amenity> Amenities { get; set; }
+
+        public DbSet<RoomAmenity> RoomAmenities { get; set; }
+
+        public DbSet<HotelRoom> HotelRooms { get; set; }
+
 
     }
 }

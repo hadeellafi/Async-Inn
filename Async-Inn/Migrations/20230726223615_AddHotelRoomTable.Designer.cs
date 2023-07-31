@@ -3,6 +3,7 @@ using Async_Inn.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Async_Inn.Migrations
 {
     [DbContext(typeof(AsyncInnDbContext))]
-    partial class AsyncInnDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230726223615_AddHotelRoomTable")]
+    partial class AddHotelRoomTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,13 +202,13 @@ namespace Async_Inn.Migrations
             modelBuilder.Entity("Async_Inn.Models.HotelRoom", b =>
                 {
                     b.HasOne("Async_Inn.Models.Hotel", "Hotel")
-                        .WithMany("HotelRooms")
+                        .WithMany()
                         .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Async_Inn.Models.Room", "Room")
-                        .WithMany("HotelRooms")
+                        .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -239,15 +242,8 @@ namespace Async_Inn.Migrations
                     b.Navigation("RoomAmenities");
                 });
 
-            modelBuilder.Entity("Async_Inn.Models.Hotel", b =>
-                {
-                    b.Navigation("HotelRooms");
-                });
-
             modelBuilder.Entity("Async_Inn.Models.Room", b =>
                 {
-                    b.Navigation("HotelRooms");
-
                     b.Navigation("RoomAmenities");
                 });
 #pragma warning restore 612, 618
