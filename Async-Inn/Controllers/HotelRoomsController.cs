@@ -25,9 +25,9 @@ namespace Async_Inn.Controllers
         // GET: /api/Hotels/{hotelId}/Rooms
         //get all rooms for this hotel
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<HotelRoom>>> GetHotelRooms()
+        public async Task<ActionResult<IEnumerable<HotelRoom>>> GetHotelRooms(int hotelId)
         {
-            return Ok(await _context.Get());
+            return Ok(await _context.Get( hotelId));
         }
 
         //GET all room details for a specific room
@@ -72,31 +72,19 @@ namespace Async_Inn.Controllers
         [HttpPost]
         public async Task<ActionResult<HotelRoom>> PostHotelRoom(int hotelId,HotelRoom hotelRoom)
         {
-            hotelRoom.HotelId = hotelId;
-            await _context.Create(hotelRoom);
-
-            // Rurtn a 201 Header to Browser or the postmane
-            return CreatedAtAction("GetHotelRoom", new { hotelId, roomId = hotelRoom.RoomNumber }, hotelRoom);
-        }
-        /*[HttpPost]
-        public async Task<ActionResult<HotelRoom>> PostHotelRoom(int hotelId, HotelRoom hotelRoom)
-        {
             try
             {
-                // Set the HotelId of the new hotelRoom based on the hotelId provided in the URL
-                hotelRoom.HotelId = hotelId;
+                var roomToAdd = await _context.Create(hotelRoom, hotelId);
 
-                // Call the Create method from the repository to add the hotelRoom to the database
-                var createdHotelRoom = await _context.Create(hotelRoom);
-
-                // Return the created hotelRoom along with the location where it can be accessed
-                return CreatedAtAction("GetHotelRoom", new { hotelId = createdHotelRoom.HotelId, roomNumber = createdHotelRoom.RoomNumber }, createdHotelRoom);
+                // Rurtn a 201 Header to Browser or the postmane
+                return Ok(roomToAdd);
             }
             catch (InvalidOperationException ex)
             {
                 return BadRequest(ex.Message);
             }
-        }*/
+        }
+        
 
         //DELETE a specific room from a hotel:
         //api/Hotels/{hotelId}/Rooms/{roomNumber}
