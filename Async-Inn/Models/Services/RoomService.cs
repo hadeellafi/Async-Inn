@@ -1,4 +1,5 @@
 ﻿using Async_Inn.Data;
+using Async_Inn.Models.DTO;
 using Async_Inn.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,36 +40,83 @@ namespace Async_Inn.Models.Services
 
         }
 
-        public async Task<Room> Create(Room room)
+        public async Task<RoomDTO> Create(RoomDTO room)
         {
-            _context.Rooms.Add(room);
+            var roomEntity = new Room()
+            {
+                Name = room.Name,
+                RoomLayout = room.RoomLayout
+            };
+            _context.Rooms.Add(roomEntity);
             await _context.SaveChangesAsync();
+            room.Id = roomEntity.Id;
             return room;
         }
 
         public async Task Delete(int id)
         {
-            Room room=await GetById(id);
-            _context.Entry(room).State = EntityState.Deleted;
-            await _context.SaveChangesAsync();
+            Room existingRoom = await _context.Rooms.FindAsync(id);
+            if (existingRoom != null)
+            {
+                Room room = await _context.Rooms.FindAsync(id);
+                _context.Entry(room).State = EntityState.Deleted;
+                await _context.SaveChangesAsync();
+            }
+
+            else
+            {
+                throw new InvalidOperationException("room does not exist.");
+            }
+            
          }
 
-        public async Task<Room> GetById(int roomId)
+        public async Task<RoomDTO> GetById(int roomId)
         {
-            Room room = await _context.Rooms
-                   .Include(r => r.RoomAmenities)
-                       .ThenInclude(ra => ra.Amenity)
-                   .FirstOrDefaultAsync(r => r.Id == roomId);
-            return room;
+            var roomDTO = await _context.Rooms
+                .Where(a => a.Id == roomId)
+                .Select(a => new RoomDTO
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    RoomLayout = a.RoomLayout, 
+                    Amenities = a.RoomAmenities
+                        .Select(ra => new AmenityDTO
+                        {
+                            Id = ra.Amenity.Id,
+                            Name = ra.Amenity.Name
+                        })
+                        .ToList()
+                })
+                .FirstOrDefaultAsync();
+
+            return roomDTO;
         }
 
-        public async Task<List<Room>> GetRooms()
+
+        public async Task<List<RoomDTO>> GetRooms()
         {
-            var rooms = await _context.Rooms.Include(x => x.RoomAmenities)
-                                          .ThenInclude(y => y.Amenity)
-                                          .ToListAsync();
-            return rooms;
+            var rooms = await _context.Rooms
+                .Include(x => x.RoomAmenities)
+                .ThenInclude(y => y.Amenity)
+                .ToListAsync();
+
+            var roomDTOs = rooms.Select(r => new RoomDTO
+            {
+                Id = r.Id,
+                Name = r.Name,
+                RoomLayout = r.RoomLayout,
+                Amenities = r.RoomAmenities
+                    .Select(ra => new AmenityDTO
+                    {
+                        Id = ra.Amenity.Id,
+                        Name = ra.Amenity.Name
+                    })
+                    .ToList()
+            }).ToList();
+
+            return roomDTOs;
         }
+
 
         public async Task RemoveAmenityFromRoom(int roomId, int amenityId)
         {
@@ -83,13 +131,23 @@ namespace Async_Inn.Models.Services
 
         }
 
-        public async Task<Room> Update(int id, Room room)
+        public async Task<RoomDTO> Update(int id, RoomDTO room)
         {
-            _context.Entry(room).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            Room existingRoom = await _context.Rooms.FindAsync(id);
+            if (existingRoom != null)
+            {
+                existingRoom.Id = room.Id;
+                existingRoom.Name = room.Name;
+                existingRoom.RoomLayout = room.RoomLayout;
 
+                await _context.SaveChangesAsync();
+                return room;
+            }
 
-            return room;
+            else
+            {
+                throw new InvalidOperationException("room does not exist.");
+            }
         }
     }
 }

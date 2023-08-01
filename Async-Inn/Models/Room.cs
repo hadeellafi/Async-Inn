@@ -3,9 +3,9 @@ namespace Async_Inn.Models
 {
     public enum Layout
     {
-        Studio = 0,
-        OneBedroom = 1,
-        TwoBedroom = 2
+        Studio,
+        OneBedroom ,
+        TwoBedroom 
     }
     public class Room
     {

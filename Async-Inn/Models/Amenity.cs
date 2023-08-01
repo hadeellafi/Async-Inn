@@ -8,7 +8,7 @@ namespace Async_Inn.Models
         public string Name { get; set; }
 
         //add navigation properties
-        public List<RoomAmenity> RoomAmenities { get; set; }
+        public List<RoomAmenity>? RoomAmenities { get; set; }
 
     }
 }
