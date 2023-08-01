@@ -35,7 +35,7 @@ namespace Async_Inn.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Amenities");
+                    b.ToTable("Amenities", (string)null);
 
                     b.HasData(
                         new
@@ -85,7 +85,7 @@ namespace Async_Inn.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Hotels");
+                    b.ToTable("Hotels", (string)null);
 
                     b.HasData(
                         new
@@ -138,7 +138,7 @@ namespace Async_Inn.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("HotelRooms");
+                    b.ToTable("HotelRooms", (string)null);
                 });
 
             modelBuilder.Entity("Async_Inn.Models.Room", b =>
@@ -158,7 +158,7 @@ namespace Async_Inn.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Rooms", (string)null);
 
                     b.HasData(
                         new
@@ -193,7 +193,7 @@ namespace Async_Inn.Migrations
 
                     b.HasIndex("AmenityId");
 
-                    b.ToTable("RoomAmenities");
+                    b.ToTable("RoomAmenities", (string)null);
                 });
 
             modelBuilder.Entity("Async_Inn.Models.HotelRoom", b =>

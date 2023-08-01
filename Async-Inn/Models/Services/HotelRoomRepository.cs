@@ -1,4 +1,5 @@
 ﻿using Async_Inn.Data;
+using Async_Inn.Models.DTO;
 using Async_Inn.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,27 +13,54 @@ namespace Async_Inn.Models.Services
         {
             _context = context;
         }
-        public async Task<HotelRoom> Create(HotelRoom hotelRoom, int hotelId)
+        public async Task<HotelRoomDTO> Create(HotelRoomDTO hotelRoom, int hotelId)
         {
             var existingHotelRoom = await _context.HotelRooms
-               .FirstOrDefaultAsync(hr => hr.HotelId == hotelId && hr.RoomNumber == hotelRoom.RoomNumber);
+                .FirstOrDefaultAsync(hr => hr.HotelId == hotelId && hr.RoomNumber == hotelRoom.RoomNumber);
 
             if (existingHotelRoom != null)
             {
                 throw new InvalidOperationException("Hotel room already exists.");
             }
+
+            // Find the Room and Hotel entities by their respective Ids
             var room = await _context.Rooms.FindAsync(hotelRoom.RoomId);
-            var hotel = await _context.Hotels.FindAsync(hotelRoom.HotelId);
+            var hotel = await _context.Hotels.FindAsync(hotelId);
 
-           // hotelRoom.Room= room;
-           // hotelRoom.Hotel= hotel;
-           hotelRoom.HotelId = hotelId;
+            if (room == null)
+            {
+                throw new InvalidOperationException("Room not found.");
+            }
 
-             await _context.HotelRooms.AddAsync(hotelRoom);
+            if (hotel == null)
+            {
+                throw new InvalidOperationException("Hotel not found.");
+            }
+
+            var newHotelRoom = new HotelRoom
+            {
+                HotelId = hotelId,
+                RoomId = hotelRoom.RoomId,
+                RoomNumber = hotelRoom.RoomNumber,
+                IsPetFriendly = hotelRoom.IsPetFriendly,
+                Rate = hotelRoom.Rate
+            };
+
+            await _context.HotelRooms.AddAsync(newHotelRoom);
+
             await _context.SaveChangesAsync();
-            return hotelRoom;
+
+            return new HotelRoomDTO
+            {
+                HotelId = newHotelRoom.HotelId,
+                RoomId = newHotelRoom.RoomId,
+                RoomNumber = newHotelRoom.RoomNumber,
+                IsPetFriendly = newHotelRoom.IsPetFriendly,
+                Rate = newHotelRoom.Rate
+            };
         }
-       
+
+
 
         public async Task Delete(int hotelId, int roomNumber)
         {
@@ -47,29 +75,57 @@ namespace Async_Inn.Models.Services
 
         }
 
-        public async Task<List<HotelRoom>> Get(int hotelId)
+        public async Task<List<HotelRoomDTO>> Get(int hotelId)
         {
-            var hotelRooms=await _context.HotelRooms.Where(hr => hr.HotelId == hotelId).ToListAsync();
+            var hotelRooms = await _context.HotelRooms
+                .Where(hr => hr.HotelId == hotelId)
+                .Include(hr => hr.Room)
+                    .ThenInclude(r => r.RoomAmenities)
+                        .ThenInclude(ra => ra.Amenity)
+                .Select(hr => new HotelRoomDTO
+                {
+                    HotelId = hr.HotelId,
+                    RoomNumber = hr.RoomNumber,
+                    Rate = hr.Rate,
+                    IsPetFriendly = hr.IsPetFriendly,
+                    RoomId = hr.RoomId,
+                    Room = new RoomDTO
+                    {
+                        Id = hr.Room.Id,
+                        Name = hr.Room.Name,
+                        RoomLayout = hr.Room.RoomLayout,
+                        Amenities = hr.Room.RoomAmenities.Select(ra => new AmenityDTO
+                        {
+                            Id = ra.Amenity.Id,
+                            Name = ra.Amenity.Name
+                        }).ToList()
+                    }
+                })
+                .ToListAsync();
+
             return hotelRooms;
-                }
+        }
+
 
         public async Task<HotelRoom> GetById(int hotelId, int roomNumber)
         {
+            //  Include and ThenInclude are used to eagerly load related data
             var hotelRoom = await _context.HotelRooms
-                .Include(room => room.Room)
-                .ThenInclude(roomAmenities => roomAmenities.RoomAmenities)
-                .ThenInclude(amenity => amenity.Amenity)
+                .Include(room => room.Room) // Include the related Room for the HotelRoom
+                    .ThenInclude(roomAmenities => roomAmenities.RoomAmenities) // Include the related RoomAmenities for the Room
+                        .ThenInclude(amenity => amenity.Amenity) // Include the related Amenity for each RoomAmenity
                 .FirstOrDefaultAsync(hr => hr.HotelId == hotelId && hr.RoomNumber == roomNumber);
 
-             if (hotelRoom != null)
-             {
-                 return hotelRoom;
-             }
-             else
-             {
-                 throw new InvalidOperationException("Hotel Room not found.");
-             }
+            if (hotelRoom != null)
+            {
+                return hotelRoom;
+            }
+            else
+            {
+                throw new InvalidOperationException("Hotel Room not found.");
+            }
         }
+
 
 
         public async Task<HotelRoom> Update(int hotelId, int roomNumber, HotelRoom hotelRoom)

@@ -1,12 +1,14 @@
-﻿namespace Async_Inn.Models.Interfaces
+﻿using Async_Inn.Models.DTO;
+
+namespace Async_Inn.Models.Interfaces
 {
     public interface IRoom
     {
-        Task<Room> Create(Room room);
+        Task<RoomDTO> Create(RoomDTO room);
 
-        Task<List<Room>> GetRooms();
+        Task<List<RoomDTO>> GetRooms();
 
-        Task<Room> GetById(int roomId);
+        Task<RoomDTO> GetById(int roomId);
 
         Task<Room> Update(int id, Room room);
 
