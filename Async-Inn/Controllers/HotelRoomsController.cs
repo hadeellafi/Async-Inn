@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Async_Inn.Data;
 using Async_Inn.Models;
 using Async_Inn.Models.Interfaces;
+using Async_Inn.Models.DTO;
 
 namespace Async_Inn.Controllers
 {
@@ -25,7 +26,7 @@ namespace Async_Inn.Controllers
         // GET: /api/Hotels/{hotelId}/Rooms
         //get all rooms for this hotel
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<HotelRoom>>> GetHotelRooms(int hotelId)
+        public async Task<ActionResult<IEnumerable<HotelRoomDTO>>> GetHotelRooms(int hotelId)
         {
             return Ok(await _context.Get( hotelId));
         }
@@ -33,7 +34,7 @@ namespace Async_Inn.Controllers
         //GET all room details for a specific room
         //    /api/Hotels/{hotelId}/Rooms/{roomNumber}
         [HttpGet("{roomNumber}")]
-        public async Task<ActionResult<HotelRoom>> GetHotelRoom(int hotelId,int roomNumber)
+        public async Task<ActionResult<HotelRoomDTO>> GetHotelRoom(int hotelId,int roomNumber)
         {
 
             try
@@ -53,7 +54,7 @@ namespace Async_Inn.Controllers
         // PUT: /api/Hotels/{hotelId}/Rooms/{roomNumber}
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{roomNumber}")]
-        public async Task<IActionResult> PutHotelRoom(int hotelId, int roomNumber, HotelRoom updatedHotelRoom)
+        public async Task<IActionResult> PutHotelRoom(int hotelId, int roomNumber, HotelRoomDTO updatedHotelRoom)
         {
             try
             {
@@ -70,7 +71,7 @@ namespace Async_Inn.Controllers
         //POST to add a room to a hotel: /api/Hotels/{hotelId}/Rooms
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<HotelRoom>> PostHotelRoom(int hotelId,HotelRoom hotelRoom)
+        public async Task<ActionResult<HotelRoomDTO>> PostHotelRoom(int hotelId,HotelRoomDTO hotelRoom)
         {
             try
             {

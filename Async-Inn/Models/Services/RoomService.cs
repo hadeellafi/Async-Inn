@@ -55,9 +55,19 @@ namespace Async_Inn.Models.Services
 
         public async Task Delete(int id)
         {
-            Room room=await _context.Rooms.FindAsync(id);
-            _context.Entry(room).State = EntityState.Deleted;
-            await _context.SaveChangesAsync();
+            Room existingRoom = await _context.Rooms.FindAsync(id);
+            if (existingRoom != null)
+            {
+                Room room = await _context.Rooms.FindAsync(id);
+                _context.Entry(room).State = EntityState.Deleted;
+                await _context.SaveChangesAsync();
+            }
+
+            else
+            {
+                throw new InvalidOperationException("room does not exist.");
+            }
+            
          }
 
         public async Task<RoomDTO> GetById(int roomId)
@@ -121,13 +131,23 @@ namespace Async_Inn.Models.Services
 
         }
 
-        public async Task<Room> Update(int id, Room room)
+        public async Task<RoomDTO> Update(int id, RoomDTO room)
         {
-            _context.Entry(room).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            Room existingRoom = await _context.Rooms.FindAsync(id);
+            if (existingRoom != null)
+            {
+                existingRoom.Id = room.Id;
+                existingRoom.Name = room.Name;
+                existingRoom.RoomLayout = room.RoomLayout;
 
+                await _context.SaveChangesAsync();
+                return room;
+            }
 
-            return room;
+            else
+            {
+                throw new InvalidOperationException("room does not exist.");
+            }
         }
     }
 }

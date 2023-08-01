@@ -50,14 +50,7 @@ namespace Async_Inn.Models.Services
 
             await _context.SaveChangesAsync();
 
-            return new HotelRoomDTO
-            {
-                HotelId = newHotelRoom.HotelId,
-                RoomId = newHotelRoom.RoomId,
-                RoomNumber = newHotelRoom.RoomNumber,
-                IsPetFriendly = newHotelRoom.IsPetFriendly,
-                Rate = newHotelRoom.Rate
-            };
+            return hotelRoom;
         }
 
 
@@ -107,9 +100,9 @@ namespace Async_Inn.Models.Services
         }
 
 
-        public async Task<HotelRoom> GetById(int hotelId, int roomNumber)
+        public async Task<HotelRoomDTO> GetById(int hotelId, int roomNumber)
         {
-            //  Include and ThenInclude are used to eagerly load related data
+            // Use Include and ThenInclude to eagerly load related data
             var hotelRoom = await _context.HotelRooms
                 .Include(room => room.Room) // Include the related Room for the HotelRoom
                     .ThenInclude(roomAmenities => roomAmenities.RoomAmenities) // Include the related RoomAmenities for the Room
@@ -118,7 +111,26 @@ namespace Async_Inn.Models.Services
 
             if (hotelRoom != null)
             {
-                return hotelRoom;
+                var hotelRoomDTO = new HotelRoomDTO
+                {
+                    HotelId = hotelRoom.HotelId,
+                    RoomNumber = hotelRoom.RoomNumber,
+                    Rate = hotelRoom.Rate,
+                    IsPetFriendly = hotelRoom.IsPetFriendly,
+                    RoomId = hotelRoom.RoomId,
+                    Room = new RoomDTO
+                    {
+                        Id = hotelRoom.Room.Id,
+                        Name = hotelRoom.Room.Name,
+                        RoomLayout = hotelRoom.Room.RoomLayout,
+                        Amenities = hotelRoom.Room.RoomAmenities.Select(ra => new AmenityDTO
+                        {
+                            Id = ra.Amenity.Id,
+                            Name = ra.Amenity.Name
+                        }).ToList()
+                    }
+                };
+                return hotelRoomDTO;
             }
             else
             {
@@ -127,26 +139,28 @@ namespace Async_Inn.Models.Services
         }
 
 
-
-        public async Task<HotelRoom> Update(int hotelId, int roomNumber, HotelRoom hotelRoom)
+        public async Task<HotelRoomDTO> Update(int hotelId, int roomNumber, HotelRoomDTO hotelRoomDTO)
         {
-            HotelRoom existingHotelRoom = await _context.HotelRooms.FindAsync(hotelId, roomNumber);
+            var existingHotelRoom = await _context.HotelRooms.FindAsync(hotelId, roomNumber);
             if (existingHotelRoom != null)
             {
-                // Update all properties of existingHotelRoom from hotelRoom
+                existingHotelRoom.HotelId = hotelRoomDTO.HotelId;
+                existingHotelRoom.RoomId = hotelRoomDTO.RoomId;
+                existingHotelRoom.RoomNumber = hotelRoomDTO.RoomNumber;
+                existingHotelRoom.Rate = hotelRoomDTO.Rate;
+                existingHotelRoom.IsPetFriendly = hotelRoomDTO.IsPetFriendly;
 
-                _context.Entry(existingHotelRoom).CurrentValues.SetValues(hotelRoom);
-
-                _context.Entry(existingHotelRoom).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
-
-                return existingHotelRoom;
+                return hotelRoomDTO;
             }
+
             else
             {
                 throw new InvalidOperationException("Hotel Room does not exist.");
             }
         }
+           
+        }
 
     }
-}
+

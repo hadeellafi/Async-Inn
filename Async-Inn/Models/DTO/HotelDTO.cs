@@ -9,6 +9,6 @@
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
 
-        public List<HotelRoomDTO> HotelRooms { get; set; }
+        public List<HotelRoomDTO>? HotelRooms { get; set; }
     }
 }

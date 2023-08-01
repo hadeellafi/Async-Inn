@@ -82,20 +82,25 @@ namespace Async_Inn.Models.Services
             return amenityDTO;
         }
 
-        public async Task<Amenity> Update(int id, Amenity amenity)
+        public async Task<AmenityDTO> Update(int id, AmenityDTO amenity)
         {
+            Amenity existingAmenity = await _context.Amenities.FindAsync(id);
+            if (existingAmenity != null)
+            {
+                existingAmenity.Id = amenity.Id;
+                existingAmenity.Name = amenity.Name;
+                
+                await _context.SaveChangesAsync();
+                return amenity;
+            }
 
-            _context.Entry(amenity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-
-            return amenity;
+            else
+            {
+                throw new InvalidOperationException("Aminity does not exist.");
+            }
         }
         
-        public async Task<bool> AmenityExists(int id)
-        {
-            return await _context.Amenities.AnyAsync(e => e.Id == id);
-        }
+        
 
     }
 }

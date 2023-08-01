@@ -10,7 +10,7 @@ namespace Async_Inn.Models.Interfaces
 
         Task<RoomDTO> GetById(int roomId);
 
-        Task<Room> Update(int id, Room room);
+        Task<RoomDTO> Update(int id, RoomDTO room);
 
         Task AddAmenityToRoom(int roomId, int amenityId);
         Task RemoveAmenityFromRoom(int roomId, int amenityId);
