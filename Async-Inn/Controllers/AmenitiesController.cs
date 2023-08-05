@@ -72,10 +72,17 @@ namespace Async_Inn.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAmenity(int id)
         {
+            try
+            {
 
-            await _context.Delete(id);
+                await _context.Delete(id);
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /*private bool AmenityExists(int id)

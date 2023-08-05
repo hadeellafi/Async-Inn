@@ -34,10 +34,17 @@ namespace Async_Inn.Models.Services
         public async Task Delete(int id)
         {
             Hotel hotel =await _context.Hotels.FindAsync(id);
+            if (hotel != null)
+            {
 
-            _context.Entry(hotel).State = EntityState.Deleted;
+                _context.Entry(hotel).State = EntityState.Deleted;
 
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException("Hotel was not found.");
+            }
         }
 
         public async Task<HotelDTO> GetById(int hotelId)

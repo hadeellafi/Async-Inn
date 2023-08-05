@@ -34,8 +34,15 @@ namespace Async_Inn.Models.Services
         {
             
             Amenity amenity = await _context.Amenities.FindAsync(id);
-            _context.Entry(amenity).State = EntityState.Deleted;
-            await _context.SaveChangesAsync();
+            if (amenity != null)
+            {
+                _context.Entry(amenity).State = EntityState.Deleted;
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException("Hotel Room not found.");
+            }
 
         }
 
