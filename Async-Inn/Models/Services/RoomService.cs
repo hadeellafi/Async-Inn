@@ -136,18 +136,19 @@ namespace Async_Inn.Models.Services
             Room existingRoom = await _context.Rooms.FindAsync(id);
             if (existingRoom != null)
             {
-                existingRoom.Id = room.Id;
                 existingRoom.Name = room.Name;
                 existingRoom.RoomLayout = room.RoomLayout;
 
                 await _context.SaveChangesAsync();
-                return room;
-            }
 
+                RoomDTO updatedRoom = await GetById(id);
+                return updatedRoom;
+            }
             else
             {
-                throw new InvalidOperationException("room does not exist.");
+                throw new InvalidOperationException("Room does not exist.");
             }
         }
+
     }
 }

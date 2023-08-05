@@ -49,6 +49,7 @@ namespace Async_Inn.Models.Services
             await _context.HotelRooms.AddAsync(newHotelRoom);
 
             await _context.SaveChangesAsync();
+            hotelRoom.HotelId = newHotelRoom.HotelId;
 
             return hotelRoom;
         }

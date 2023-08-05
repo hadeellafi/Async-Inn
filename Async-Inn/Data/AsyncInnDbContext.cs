@@ -23,13 +23,13 @@ namespace Async_Inn.Data
                     PhoneNumber = "07998883014"
                 },
         new Hotel
-         {
-             Id = 2,
-             Name = "Hotel B",
-             City = "City B",
-             State = "State B",
-             Address = "Address B",
-             PhoneNumber = "0799783014"
+        {
+            Id = 2,
+            Name = "Hotel B",
+            City = "City B",
+            State = "State B",
+            Address = "Address B",
+            PhoneNumber = "0799783014"
         },
          new Hotel
          {
@@ -49,19 +49,22 @@ namespace Async_Inn.Data
 
             // Seed data for Rooms
             modelBuilder.Entity<Room>().HasData(
-                new Room { Id = 1, Name = "Room 1", RoomLayout = 0 },
-                new Room { Id = 2, Name = "Room 2", RoomLayout = 1 },
-                new Room { Id = 3, Name = "Room 3", RoomLayout = 2 }
+             new Room { Id = 1, Name = "Room 1", RoomLayout = Layout.Studio },
+             new Room { Id = 2, Name = "Room 2", RoomLayout = Layout.OneBedroom },
+             new Room { Id = 3, Name = "Room 3", RoomLayout = Layout.TwoBedroom }
             );
+
             modelBuilder.Entity<RoomAmenity>().HasKey(
-               roomAmenity => new {
+               roomAmenity => new
+               {
                    roomAmenity.RoomId,
                    roomAmenity.AmenityId
                }
                );
 
             modelBuilder.Entity<HotelRoom>().HasKey(
-               hotelRoom => new {
+               hotelRoom => new
+               {
                    hotelRoom.HotelId,
                    hotelRoom.RoomNumber
                }

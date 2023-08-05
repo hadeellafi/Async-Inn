@@ -11,7 +11,7 @@ namespace Async_Inn.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int RoomLayout  { get; set; }
+        public Layout RoomLayout  { get; set; }
 
         //add navigation properties
 
