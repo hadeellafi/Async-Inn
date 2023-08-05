@@ -54,7 +54,7 @@ namespace Async_Inn.Models.Services
             return hotelRoom;
         }
 
-
+        
 
         public async Task Delete(int hotelId, int roomNumber)
         {
@@ -160,8 +160,9 @@ namespace Async_Inn.Models.Services
                 throw new InvalidOperationException("Hotel Room does not exist.");
             }
         }
-           
-        }
+
+
+    }
 
     }
 
