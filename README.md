@@ -431,4 +431,5 @@ The tests cover CRUD operations and other methods of the services, ensuring that
 
 7. `CanUpdateHotelRoom`: Tests the `Update` method of the `HotelRoomRepository`. It ensures that a hotel room can be successfully updated with new information.
 
+![tests](./assets/tests.png)
 
