@@ -366,3 +366,69 @@ In the initial version of the application, the presentation layer (controllers) 
 - **Remove Specific Room from Hotel**
 
   DELETE: `https://localhost:7004/api/Hotels/1/Rooms/3`
+
+## Routes by Swagger
+
+**Amenities Routes**
+
+![AmenitiyRoutes](./assets/amenities.png)
+
+**Room Routes**
+
+![RoomRoutes](./assets/rooms.png)
+
+**Hotel Routes**
+
+![hotelRoutes](./assets/hotels.png)
+
+**Hotel Room Routes**
+
+![hotelroomsRoutes](./assets/hotelrooms.png)
+
+## Unit testing
+
+The unit tests are written to test the functionality of various services in the Async Inn application.
+
+### Mock Class
+
+Using Mock class allows the tests to have a consistent and isolated environment for interacting with the database. It enables the tests to focus on specific scenarios without affecting the actual database.
+
+The methods in the `Mock` class and their purposes:
+
+1. **CreateAndSaveTestAmenity:**
+   - Purpose: Creates a new `Amenity` .
+   - Returns: The created `Amenity` entity.
+
+2. **CreateAndSaveTestRoom:**
+   - Purpose: Creates a new `Room` entity.
+   - Returns: The created `Room` entity.
+
+3. **CreateAndSaveTestHotel:**
+   - Purpose: Creates a new `Hotel` entity.
+   - Returns: The created `Hotel` entity.
+
+4. **Dispose:**
+   - Purpose: Implements the `Dispose` method from the `IDisposable` interface. It ensures that the in-memory database (`_db`) and connection (`_connection`) are properly disposed of after each test is executed.
+
+These methods serve as helper functions in the testing process.
+
+### test Cases
+
+The tests cover CRUD operations and other methods of the services, ensuring that they work as expected.
+
+
+1. `CanGetRoomById`: Tests the `GetById` method of the `RoomService`. It verifies that a room can be retrieved by its ID.
+
+2. `CanUpdateRoom`: Tests the `Update` method of the `RoomService`. It checks whether a room can be successfully updated with new information.
+
+3. `CanAddAminentyToRoom`: Tests the `AddAmenityToRoom` method of the `RoomService`. It ensures that an amenity can be added to a room .
+
+4. `CanRemoveAmenityFromRoom`: Tests the `RemoveAmenityFromRoom` method of the `RoomService`. It verifies that an amenity can be removed from a room.
+
+5. `CanCreateHotelRoom`: Tests the `Create` method of the `HotelRoomRepository`. It checks whether a hotel room can be successfully created and stored in the database.
+
+6. `CanDeleteHotelRoom`: Tests the `Delete` method of the `HotelRoomRepository`. It verifies that a hotel room can be deleted from the database.
+
+7. `CanUpdateHotelRoom`: Tests the `Update` method of the `HotelRoomRepository`. It ensures that a hotel room can be successfully updated with new information.
+
+
