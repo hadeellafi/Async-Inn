@@ -1,8 +1,11 @@
 using Async_Inn.Data;
+using Async_Inn.Models;
 using Async_Inn.Models.Interfaces;
 using Async_Inn.Models.Services;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Async_Inn
 {
@@ -19,11 +22,23 @@ namespace Async_Inn
        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
      );
             /////////////////////////////////
-            
+
             string connString = builder.Configuration.GetConnectionString("DefaultConnection");
 
             builder.Services
                 .AddDbContext<AsyncInnDbContext>(options => options.UseSqlServer(connString));
+
+            /* lab 18 identity */
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                // There are other options like this
+            }).AddEntityFrameworkStores<AsyncInnDbContext>();
+
+            builder.Services.AddTransient<IUser, IdentityUserService>();
+
+            ////////////lab identity
+
 
             ////lab13 repository design pattern
             builder.Services.AddTransient<IHotel, HotelService>();

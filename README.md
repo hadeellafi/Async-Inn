@@ -385,6 +385,10 @@ In the initial version of the application, the presentation layer (controllers) 
 
 ![hotelroomsRoutes](./assets/hotelrooms.png)
 
+**Users Routes**
+
+![users](./assets/users.png)
+
 ## Unit testing
 
 The unit tests are written to test the functionality of various services in the Async Inn application.
@@ -433,3 +437,26 @@ The tests cover CRUD operations and other methods of the services, ensuring that
 
 ![tests](./assets/tests.png)
 
+---
+
+## User Registration and Login with ASP.NET Identity
+
+### What is ASP.NET Identity?
+
+ASP.NET Identity is a framework provided by Microsoft for managing user authentication, authorization, and identity-related functionalities in ASP.NET applications.
+
+### User Registration Flow
+
+1. **User Registration Form**: Users provide their information (username, email, password)
+
+2. **Data Validation**: The provided data is validated to ensure it meets the required criteria (password strength, unique email/username)
+
+3. **Hashed Password**: The password is securely hashed and stored in the database.
+
+4. **User Creation**: A new user is created in the database using ASP.NET Identity APIs.
+
+
+### User Login Flow
+
+- **User Login Form**: Users enter their  (username/ and password) .
+- **Check inputs**:The entered credentials are validated and checked for correctness.

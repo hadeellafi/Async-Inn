@@ -1,9 +1,13 @@
 ﻿using Async_Inn.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Async_Inn.Data
 {
-    public class AsyncInnDbContext : DbContext
+    //IdentityDbContext<ApplicationUser> 
+   //  This will provide the necessary tables and infrastructure for managing user authentication
+    public class AsyncInnDbContext: IdentityDbContext<ApplicationUser>
     {
         // constructer will take paramenter of type Dbcontextoptions and will base it to base
         public AsyncInnDbContext(DbContextOptions options) : base(options)
@@ -12,6 +16,12 @@ namespace Async_Inn.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // This calls the base method, and Identity needs it
+            //By calling base.OnModelCreating(modelBuilder), you ensure that the default configuration for identity-related entities
+            //is applied first, and then you can customize and extend it as needed for your application's requirements.
+
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Hotel>().HasData(
                 new Hotel
                 {
