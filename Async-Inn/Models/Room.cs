@@ -15,11 +15,9 @@ namespace Async_Inn.Models
 
         //add navigation properties
 
-
-        public List<RoomAmenity>? RoomAmenities { get; set; }
+        public List<RoomAmenity>? RoomAmenities { get; set; }//it is like i promise "the program "that the value isnot null
 
         public List<HotelRoom>? HotelRooms { get; set; }
-
 
     }
 }

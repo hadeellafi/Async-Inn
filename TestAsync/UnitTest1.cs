@@ -91,12 +91,12 @@ namespace TestAsync
             var updatedRoom = await service.GetById(room.Id);
             Assert.DoesNotContain(updatedRoom.Amenities, a => a.Id == amenity.Id);
         }
+
         //////////hotel room tests 
 
         [Fact]
         public async void CanCreateHotelRoom()
         {
-            // Arrange
             var hotel = await CreateAndSaveTestHotel();
             var room = await CreateAndSaveTestRoom();
 
@@ -123,7 +123,6 @@ namespace TestAsync
         [Fact]
         public async void CanDeleteHotelRoom()
         {
-            // Arrange
             var hotel = await CreateAndSaveTestHotel();
             var room = await CreateAndSaveTestRoom();
             var hotelRoomDTO = new HotelRoomDTO
@@ -139,10 +138,8 @@ namespace TestAsync
 
             await service.Create(hotelRoomDTO, hotel.Id);
 
-            // Act
             await service.Delete(hotel.Id, hotelRoomDTO.RoomNumber);
 
-            // Assert
             await Assert.ThrowsAsync<InvalidOperationException>(async () => await service.GetById(hotel.Id, hotelRoomDTO.RoomNumber));
         }
 
