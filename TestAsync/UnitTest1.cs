@@ -5,6 +5,13 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Http.HttpResults;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Runtime.Intrinsics.X86;
+using Async_Inn.Controllers;
+using Async_Inn.Models.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace TestAsync
 {
@@ -178,6 +185,22 @@ namespace TestAsync
             Assert.Equal(hotelRoomDTO.IsPetFriendly, retrievedHotelRoom.IsPetFriendly);
             Assert.Equal(hotelRoomDTO.Rate, retrievedHotelRoom.Rate);
         }
+      /*  [Fact]
+        public async Task Test_RegisterUser()
+        {
+            // Arrange
+            var mockRegister = new RegisterUserDTO
+            {
+                Username = "TEST",
+                Password = "Test1@",
+                Email = "t@gmail.com",
+                PhoneNumber = "0799883014",
+                Roles = { "District Manager" }
+            };
+
+        }*/
+
+
 
     }
 

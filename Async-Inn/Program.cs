@@ -2,6 +2,7 @@ using Async_Inn.Data;
 using Async_Inn.Models;
 using Async_Inn.Models.Interfaces;
 using Async_Inn.Models.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -37,7 +38,7 @@ namespace Async_Inn
 
             builder.Services.AddTransient<IUser, IdentityUserService>();
 
-            ////////////lab identity
+            ////////////lab18 identity
 
 
             ////lab13 repository design pattern
@@ -48,6 +49,30 @@ namespace Async_Inn
             builder.Services.AddTransient<IAmenity, AmenityService>();
 
             builder.Services.AddTransient<IHotelRoom, HotelRoomRepository>();
+        
+            //lab 19 roles 
+            builder.Services.AddScoped<JwtTokenService>();
+
+
+            //add authentication method
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                // Tell the authenticaion scheme "how/where" to validate the token + secret
+                options.TokenValidationParameters = JwtTokenService.GetValidateParameters(builder.Configuration);
+            });
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Create", policy => policy.RequireClaim("permissions", "Create"));
+                options.AddPolicy("Read", policy => policy.RequireClaim("permissions", "Read"));
+                options.AddPolicy("Update", policy => policy.RequireClaim("permissions", "Update"));
+                options.AddPolicy("Delete", policy => policy.RequireClaim("permissions", "Delete"));
+
+            });
 
             /////lab 17 add swagger
             builder.Services.AddSwaggerGen(options =>
@@ -61,6 +86,11 @@ namespace Async_Inn
 
             ///////
             var app = builder.Build();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+          
 
             ///lab17
             app.UseSwagger(aptions =>

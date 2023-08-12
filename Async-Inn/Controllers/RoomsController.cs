@@ -9,6 +9,8 @@ using Async_Inn.Data;
 using Async_Inn.Models;
 using Async_Inn.Models.Interfaces;
 using Async_Inn.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Async_Inn.Controllers
 {
@@ -24,6 +26,9 @@ namespace Async_Inn.Controllers
         }
 
         // GET: api/Rooms
+        [AllowAnonymous]
+
+        [Authorize(Roles = "District Manager")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RoomDTO>>> GetRooms()
         {
@@ -31,6 +36,9 @@ namespace Async_Inn.Controllers
         }
 
         // GET: api/Rooms/5
+        [AllowAnonymous]
+
+        [Authorize(Roles = "District Manager")]
         [HttpGet("{id}")]
         public async Task<ActionResult<RoomDTO>> GetRoom(int id)
         {
@@ -39,6 +47,7 @@ namespace Async_Inn.Controllers
 
         // PUT: api/Rooms/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "District Manager")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRoom(int id, RoomDTO room)
         {
@@ -59,6 +68,7 @@ namespace Async_Inn.Controllers
 
         // POST: api/Rooms
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "District Manager")]
         [HttpPost]
         public async Task<ActionResult<Room>> PostRoom(RoomDTO room)
         {
@@ -68,6 +78,7 @@ namespace Async_Inn.Controllers
         }
 
         // DELETE: api/Rooms/5
+        [Authorize(Roles = "District Manager")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRoom(int id)
         {
@@ -91,6 +102,7 @@ namespace Async_Inn.Controllers
 
 
         /////////lab 14
+        [Authorize(Roles = "District Manager,Property Manager,Agent")]
         [HttpPost]
         [Route("{roomId}/Amenity/{amenityId}")]
         public async Task<IActionResult> AddAmenityToRoom(int roomId,int amenityId)
@@ -104,6 +116,7 @@ namespace Async_Inn.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [Authorize(Roles = "District Manager,Agent")]
         [HttpDelete]
         [Route("{roomId}/Amenity/{amenityId}")]
         public async Task<IActionResult> RemoveAmenityFromRoom(int roomId, int amenityId)

@@ -4,6 +4,7 @@ using Async_Inn.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Async_Inn.Migrations
 {
     [DbContext(typeof(AsyncInnDbContext))]
-    partial class AsyncInnDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230812203708_seedingData")]
+    partial class seedingData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -295,27 +298,6 @@ namespace Async_Inn.Migrations
                             ConcurrencyStamp = "00000000-0000-0000-0000-000000000000",
                             Name = "District Manager",
                             NormalizedName = "DISTRICT MANAGER"
-                        },
-                        new
-                        {
-                            Id = "property manager",
-                            ConcurrencyStamp = "00000000-0000-0000-0000-000000000000",
-                            Name = "Property Manager",
-                            NormalizedName = "PROPERTY MANAGER"
-                        },
-                        new
-                        {
-                            Id = "agent",
-                            ConcurrencyStamp = "00000000-0000-0000-0000-000000000000",
-                            Name = "Agent",
-                            NormalizedName = "AGENT"
-                        },
-                        new
-                        {
-                            Id = "anonymous users",
-                            ConcurrencyStamp = "00000000-0000-0000-0000-000000000000",
-                            Name = "Anonymous users",
-                            NormalizedName = "ANONYMOUS USERS"
                         });
                 });
 
@@ -346,80 +328,24 @@ namespace Async_Inn.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 12,
+                            Id = 4,
                             ClaimType = "permissions",
-                            ClaimValue = "Create",
+                            ClaimValue = "create",
                             RoleId = "district manager"
                         },
                         new
                         {
-                            Id = 13,
+                            Id = 5,
                             ClaimType = "permissions",
-                            ClaimValue = "Read",
+                            ClaimValue = "update",
                             RoleId = "district manager"
                         },
                         new
                         {
-                            Id = 14,
+                            Id = 6,
                             ClaimType = "permissions",
-                            ClaimValue = "Update",
+                            ClaimValue = "delete",
                             RoleId = "district manager"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            ClaimType = "permissions",
-                            ClaimValue = "Delete",
-                            RoleId = "district manager"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            ClaimType = "permissions",
-                            ClaimValue = "Create",
-                            RoleId = "property manager"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            ClaimType = "permissions",
-                            ClaimValue = "Read",
-                            RoleId = "property manager"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            ClaimType = "permissions",
-                            ClaimValue = "Update",
-                            RoleId = "property manager"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            ClaimType = "permissions",
-                            ClaimValue = "Create",
-                            RoleId = "agent"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            ClaimType = "permissions",
-                            ClaimValue = "Read",
-                            RoleId = "agent"
-                        },
-                        new
-                        {
-                            Id = 21,
-                            ClaimType = "permissions",
-                            ClaimValue = "Update",
-                            RoleId = "agent"
-                        },
-                        new
-                        {
-                            Id = 22,
-                            ClaimType = "permissions",
-                            ClaimValue = "Delete",
-                            RoleId = "agent"
                         });
                 });
 
