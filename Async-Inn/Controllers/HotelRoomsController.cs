@@ -9,6 +9,8 @@ using Async_Inn.Data;
 using Async_Inn.Models;
 using Async_Inn.Models.Interfaces;
 using Async_Inn.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Async_Inn.Controllers
 {
@@ -25,6 +27,8 @@ namespace Async_Inn.Controllers
 
         // GET: /api/Hotels/{hotelId}/Rooms
         //get all rooms for this hotel
+        [AllowAnonymous]
+        [Authorize(Roles = "District Manager , Property Manager, Agent")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HotelRoomDTO>>> GetHotelRooms(int hotelId)
         {
@@ -33,6 +37,8 @@ namespace Async_Inn.Controllers
 
         //GET all room details for a specific room
         //    /api/Hotels/{hotelId}/Rooms/{roomNumber}
+        [AllowAnonymous]
+        [Authorize(Roles = "District Manager , Property Manager, Agent")]
         [HttpGet("{roomNumber}")]
         public async Task<ActionResult<HotelRoomDTO>> GetHotelRoom(int hotelId,int roomNumber)
         {
@@ -53,6 +59,8 @@ namespace Async_Inn.Controllers
 
         // PUT: /api/Hotels/{hotelId}/Rooms/{roomNumber}
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
+        [Authorize(Roles = "District Manager , Property Manager, Agent")]
         [HttpPut("{roomNumber}")]
         public async Task<IActionResult> PutHotelRoom(int hotelId, int roomNumber, HotelRoomDTO updatedHotelRoom)
         {
@@ -70,6 +78,7 @@ namespace Async_Inn.Controllers
 
         //POST to add a room to a hotel: /api/Hotels/{hotelId}/Rooms
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "District Manager , Property Manager")]
         [HttpPost]
         public async Task<ActionResult<HotelRoomDTO>> PostHotelRoom(int hotelId,HotelRoomDTO hotelRoom)
         {
@@ -85,10 +94,11 @@ namespace Async_Inn.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
+
 
         //DELETE a specific room from a hotel:
         //api/Hotels/{hotelId}/Rooms/{roomNumber}
+        [Authorize(Roles = "District Manager")]
         [HttpDelete("{roomNumber}")]
         public async Task<IActionResult> DeleteHotelRoom(int hotelId, int roomNumber)
         {
